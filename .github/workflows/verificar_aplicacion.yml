@@ -1,0 +1,40 @@
+
+name: Verificar aplicacion de sentimientos
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-api.txt
+          pip install pytest httpx streamlit requests
+
+      - name: Comprobar sintaxis del codigo
+        run: |
+          python -m compileall -q src
+
+      - name: Comprobar funcionamiento de la API
+        run: |
+          python -c "from fastapi.testclient import TestClient; from src.api import app; c = TestClient(app); r = c.get('/salud'); assert r.status_code == 200; assert r.json()['modelo_cargado'] is True; print('API verificada correctamente')"
+
+      - name: Comprobar prediccion
+        run: |
+          python -c "from fastapi.testclient import TestClient; from src.api import app; c = TestClient(app); datos = {'texto_resena':'Excelente producto y buena atencion','categoria_producto':'Electrónica','canal_compra':'Online','plataforma':'Web','tiempo_respuesta_horas':2,'problema_resuelto':'Sí','reclamo_formal':'No','importe_compra':1500,'edad':35,'genero':'Femenino','ciudad':'Santo Domingo','antiguedad_cliente_meses':24}; r = c.post('/predecir', json=datos); assert r.status_code == 200, r.text; assert r.json()['sentimiento_predicho'] in ['Positivo','Neutral','Negativo']; print('Prediccion verificada:',r.json()['sentimiento_predicho'])"
