@@ -6,7 +6,7 @@ import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
-
+from monitoring.registro import configurar_monitoreo
 
 # Ubicación del modelo entrenado
 RUTA_MODELO = Path("deployment/modelo_sentimientos.pkl")
@@ -30,7 +30,7 @@ app = FastAPI(
     ),
     version="1.0.0",
 )
-
+configurar_monitoreo(app)
 
 # Datos que debe proporcionar el usuario
 class ResenaEntrada(BaseModel):
