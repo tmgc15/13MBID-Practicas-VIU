@@ -7,3 +7,17 @@ stages:
     - src/procesar_datos.py
     outs:
     - data/processed/datos_integrados.csv
+  entrenar_modelo:
+    cmd: uv run python src/entrenar_modelo.py
+    deps:
+    - data/processed/datos_integrados.csv
+    - src/entrenar_modelo.py
+    outs:
+    - models/modelo_sentimientos.pkl
+    - reports/metricas_entrenamiento.csv
+  evaluar_modelo:
+    cmd: uv run python -m pytest tests/test_modelo.py -v
+    deps:
+    - models/modelo_sentimientos.pkl
+    - reports/metricas_entrenamiento.csv
+    - tests/test_modelo.py

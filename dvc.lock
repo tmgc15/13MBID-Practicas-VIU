@@ -20,3 +20,38 @@ stages:
       hash: md5
       md5: 652ffd255e046eaaf109c50fa23064b4
       size: 5207585
+  entrenar_modelo:
+    cmd: uv run python src/entrenar_modelo.py
+    deps:
+    - path: data/processed/datos_integrados.csv
+      hash: md5
+      md5: 652ffd255e046eaaf109c50fa23064b4
+      size: 5207585
+    - path: src/entrenar_modelo.py
+      hash: md5
+      md5: d25db7f4b09450564e2f2915dc5ddf44
+      size: 4218
+    outs:
+    - path: models/modelo_sentimientos.pkl
+      hash: md5
+      md5: f48104c95b638e520fa3c58401649129
+      size: 16929
+    - path: reports/metricas_entrenamiento.csv
+      hash: md5
+      md5: d31ba8b44b18a77908d3ee900aae13f8
+      size: 145
+  evaluar_modelo:
+    cmd: uv run python -m pytest tests/test_modelo.py -v
+    deps:
+    - path: models/modelo_sentimientos.pkl
+      hash: md5
+      md5: f48104c95b638e520fa3c58401649129
+      size: 16929
+    - path: reports/metricas_entrenamiento.csv
+      hash: md5
+      md5: d31ba8b44b18a77908d3ee900aae13f8
+      size: 145
+    - path: tests/test_modelo.py
+      hash: md5
+      md5: bdcfc40cac63c2be8866059c0148f2c7
+      size: 833
