@@ -9,7 +9,10 @@ from pydantic import BaseModel, Field
 
 
 # Ubicación del modelo entrenado
-RUTA_MODELO = Path("models/modelo_sentimientos.pkl")
+RUTA_MODELO = Path("deployment/modelo_sentimientos.pkl")
+
+if not RUTA_MODELO.exists():
+    RUTA_MODELO = Path("models/modelo_sentimientos.pkl")
 
 if not RUTA_MODELO.exists():
     raise RuntimeError(
