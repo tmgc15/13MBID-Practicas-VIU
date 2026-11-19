@@ -1,0 +1,22 @@
+schema: '2.0'
+stages:
+  preparar_datos:
+    cmd: uv run python src/procesar_datos.py
+    deps:
+    - path: data/raw/datos_clientes.csv
+      hash: md5
+      md5: b46a5adb5c13bc3007ad2dfe45e58430
+      size: 438782
+    - path: data/raw/datos_resenas.csv
+      hash: md5
+      md5: e3ec9eeddaab38eea998b348bcd17d94
+      size: 4465568
+    - path: src/procesar_datos.py
+      hash: md5
+      md5: 0ed43b52d8bc83fef0abfba4c9c0e530
+      size: 2297
+    outs:
+    - path: data/processed/datos_integrados.csv
+      hash: md5
+      md5: 652ffd255e046eaaf109c50fa23064b4
+      size: 5207585

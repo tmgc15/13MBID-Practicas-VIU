@@ -1,0 +1,9 @@
+stages:
+  preparar_datos:
+    cmd: uv run python src/procesar_datos.py
+    deps:
+    - data/raw/datos_clientes.csv
+    - data/raw/datos_resenas.csv
+    - src/procesar_datos.py
+    outs:
+    - data/processed/datos_integrados.csv
