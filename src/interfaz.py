@@ -2,7 +2,7 @@
 import requests
 import streamlit as st
 
-API_URL = "http://127.0.0.1:8000/predecir"
+API_URL = "https://one3mbid-api-sentimientos.onrender.com/predecir"
 
 st.set_page_config(
     page_title="Análisis de sentimientos",
